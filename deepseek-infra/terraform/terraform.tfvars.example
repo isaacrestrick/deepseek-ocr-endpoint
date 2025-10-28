@@ -1,0 +1,28 @@
+# AWS Configuration
+aws_region = "us-east-1"
+
+# EC2 Configuration
+instance_type = "g4dn.xlarge"  # Options: g4dn.xlarge, g4dn.2xlarge, g5.xlarge, etc.
+
+# REQUIRED: Your AWS SSH key name (must exist in AWS)
+# Create one in AWS Console: EC2 > Key Pairs > Create Key Pair
+ssh_key_name = "your-key-name-here"
+
+# Security Configuration
+# IMPORTANT: Change this to your IP address for security!
+# Find your IP: curl ifconfig.me
+allowed_ips = ["0.0.0.0/0"]  # WARNING: Change to "YOUR.IP.ADDRESS/32" for security
+
+# Project Configuration
+project_name = "deepseek-ocr"
+environment  = "dev"
+
+# Storage Configuration
+ebs_volume_size = 100  # GB - 100GB is recommended for model + cache
+
+# DeepSeek-OCR Configuration
+token_compression_mode = "base"  # Options: tiny, small, base, large, gundam
+
+# Cost Optimization
+use_spot_instance  = false  # Set to true for 50-70% cost savings (can be interrupted)
+create_elastic_ip  = true   # Set to false to save $3.60/month if you don't need static IP
