@@ -75,12 +75,12 @@ export async function POST(request: NextRequest) {
       text: body.userPrompt,
     });
 
-    // Add all images
-    for (const imageBase64 of body.images) {
+    // Add all images (they already come as data URLs from the frontend)
+    for (const imageDataUrl of body.images) {
       messageContent.push({
         type: 'image_url',
         image_url: {
-          url: `data:image/png;base64,${imageBase64}`,
+          url: imageDataUrl,
         },
       });
     }
