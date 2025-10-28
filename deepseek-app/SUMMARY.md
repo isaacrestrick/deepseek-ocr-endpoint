@@ -73,14 +73,16 @@ All planned features have been successfully implemented!
 
 ### 5. API Implementation
 
-#### Mock OCR Endpoint (`app/api/ocr/route.ts`)
+#### DeepSeek OCR Endpoint (`app/api/ocr/route.ts`)
 - POST endpoint at `/api/ocr`
+- Connected to deployed AWS DeepSeek OCR API
 - Request validation
-- Simulated processing delay
-- Mock markdown response
-- Error handling
+- OpenAI-compatible vLLM format
+- Multi-image support with base64 encoding
+- System and user prompt handling
+- Error handling with detailed messages
 - Processing time tracking
-- Ready for vLLM integration
+- Configurable endpoint via environment variable
 
 ### 6. TypeScript Types (`lib/types.ts`)
 - `ImageFile` - File upload structure
@@ -135,21 +137,34 @@ npm run lint     # Run ESLint
 8. Copy results to clipboard if needed
 9. Click "[RESET]" to clear and start over
 
-## 🔧 Next Steps for vLLM Integration
+## 🔧 API Configuration
 
-When your vLLM endpoint is ready:
+The frontend is now connected to the deployed DeepSeek OCR API on AWS EC2!
 
-1. Create `.env.local` file with your endpoint details:
+### Current Endpoint
+- **API URL**: `http://52.54.253.30:8000`
+- **Model**: `deepseek-ai/DeepSeek-OCR`
+- **Status**: Deployed and running
+
+### Customizing the Endpoint
+
+If the API IP changes or you want to use a different endpoint:
+
+1. Create `.env.local` file in the `deepseek-app` directory:
 ```bash
-DEEPSEEK_ENDPOINT_URL=your-endpoint-url
-DEEPSEEK_API_KEY=your-api-key
+DEEPSEEK_API_ENDPOINT=http://YOUR-IP:8000
 ```
 
-2. Modify `app/api/ocr/route.ts` to call your real endpoint instead of returning mock data
+2. Get the current endpoint from Terraform:
+```bash
+cd ../deepseek-infra/terraform
+terraform output api_endpoint
+```
 
-3. Update the request format if needed to match your vLLM endpoint's expected format
+3. Restart the Next.js dev server to apply changes
 
-4. Test with real images and prompts!
+### Note on Dynamic IPs
+The deployed API uses a dynamic IP address. If you stop/start the EC2 instance, the IP will change. Update the endpoint URL accordingly or enable Elastic IP in the Terraform configuration for a static address.
 
 ## 📦 What's NOT Included (Future Extensions)
 
