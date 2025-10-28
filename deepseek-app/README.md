@@ -8,7 +8,7 @@ A retro Matrix-themed Next.js application for testing your vLLM-compatible DeepS
 - 📸 **Multi-Image Upload** - Drag-and-drop or click to upload multiple images
 - 🖼️ **Image Preview Grid** - View and manage uploaded images before processing
 - 💬 **Dual Prompts** - Configure system behavior and user instructions separately
-- ⚡ **Real-time Processing** - Mock endpoint with simulated processing (ready for vLLM integration)
+- ⚡ **Real-time Processing** - Connected to deployed DeepSeek OCR API on AWS
 - 📋 **Markdown Output** - Clean, formatted results with copy-to-clipboard functionality
 - 📱 **Responsive Design** - Works on desktop, tablet, and mobile devices
 
@@ -79,20 +79,41 @@ npm run dev
 6. **View Results** - See formatted output with processing time
 7. **Copy Output** - Use the copy button to save results
 
-## Connecting Your vLLM Endpoint
+## API Connection
 
-Currently, the app uses a mock API endpoint. To connect your real vLLM-compatible DeepSeek OCR endpoint:
+The application is now connected to a deployed DeepSeek OCR API running on AWS EC2!
 
-1. Update `app/api/ocr/route.ts` with your endpoint configuration
-2. Add environment variables for your endpoint URL:
+### Current Configuration
+
+- **API Endpoint**: `http://52.54.253.30:8000`
+- **Model**: `deepseek-ai/DeepSeek-OCR`
+- **Status**: Deployed and ready to use
+
+### Changing the API Endpoint
+
+If the API IP changes (due to instance restart) or you want to use a different endpoint:
+
+1. Create a `.env.local` file in the project root:
 
 ```bash
 # .env.local
-DEEPSEEK_ENDPOINT_URL=your-vllm-endpoint-url
-DEEPSEEK_API_KEY=your-api-key
+DEEPSEEK_API_ENDPOINT=http://YOUR-IP:8000
 ```
 
-3. Modify the API route to forward requests to your vLLM endpoint
+2. Get the current endpoint from the infrastructure:
+
+```bash
+cd ../deepseek-infra/terraform
+terraform output api_endpoint
+```
+
+3. Restart the Next.js development server
+
+### Important Note on Dynamic IPs
+
+The deployed API uses a dynamic IP address. If you stop and restart the EC2 instance, the IP will change. You'll need to:
+- Update the `DEEPSEEK_API_ENDPOINT` environment variable
+- Or enable Elastic IP in the Terraform configuration for a static address
 
 ## Customization
 
@@ -122,7 +143,7 @@ const maxSize = 10 * 1024 * 1024; // Currently 10MB
 - [ ] PDF upload and processing support
 - [ ] Example prompts sidebar
 - [ ] Request history tracking
-- [ ] Real vLLM endpoint integration
+- [x] Real vLLM endpoint integration
 - [ ] Batch processing queue
 - [ ] Export results as files
 
@@ -151,4 +172,4 @@ Feel free to submit issues and enhancement requests!
 
 ---
 
-**Note**: This application currently uses a mock API endpoint. Replace it with your actual vLLM-compatible DeepSeek OCR endpoint for production use.
+**Note**: This application is now connected to a deployed DeepSeek OCR API. Make sure the EC2 instance is running before using the OCR functionality.

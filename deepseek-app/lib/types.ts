@@ -17,7 +17,7 @@ export interface OCRFormData {
 export interface OCRRequest {
   systemPrompt?: string;
   userPrompt: string;
-  images: string[]; // Base64 encoded images
+  images: string[]; // Data URLs (e.g., "data:image/png;base64,...")
 }
 
 export interface OCRResponse {
